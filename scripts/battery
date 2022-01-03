@@ -1,0 +1,22 @@
+#!/bin/bash
+
+triggered=false
+threshold=15
+
+while true
+do
+	status=$(cat /sys/class/power_supply/BAT0/capacity)
+
+	if [ $status -le $threshold ] && [ $triggered = false ]
+	then
+		triggered=true
+		notify-send "Warning!" "low battery"
+	else
+		if [ $status -gt $threshold ]
+		then
+			triggered=false
+		fi
+	fi
+
+	sleep 1
+done
